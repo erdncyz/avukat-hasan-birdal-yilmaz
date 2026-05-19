@@ -1,4 +1,4 @@
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { motion } from 'motion/react';
 import { Scale, ShieldCheck, Gavel, Briefcase, Users, FileText, Phone, MapPin, Mail, Instagram, Linkedin, Facebook, ChevronRight, Star, Quote, Sun, Moon } from 'lucide-react';
 import { useState, useEffect, createContext, useContext } from 'react';
 import { cn } from './lib/utils';
@@ -18,6 +18,7 @@ const T = {
       desc: 'Malatya merkezli hukuk büromuzda, her davanın benzersiz olduğunun bilinciyle, profesyonel ve sonuç odaklı çözümler sunuyoruz.',
       cta1: 'Ücretsiz Danışmanlık', cta2: 'Uzmanlık Alanlarımız',
       reviewBadge: '76+ Başarılı Yorum', reviewSub: '"Malatya\'nın en iyi avukatlarından..."',
+      reviewCta: 'Google Yorumlarinin Tamamini Gor',
     },
     services: {
       label: 'Uzmanlık Alanlarımız',
@@ -46,7 +47,10 @@ const T = {
     },
     reviews: {
       label: 'Müvekkil Görüşleri',
-      h: 'Yüzlerce Memnun', hItalic: 'Birey ve Kurum', cta: 'Tamamı',
+      h: 'Yüzlerce Memnun', hItalic: 'Birey ve Kurum', hEnd: '.',
+      showMore: 'Daha Fazla',
+      showLess: 'Daha Az',
+      cta: "Tumunu Google'da Gor",
     },
     contact: {
       label: 'İletişim',
@@ -78,6 +82,7 @@ const T = {
       desc: 'At our Malatya-based law firm, with the awareness that each case is unique, we provide professional and result-oriented legal solutions.',
       cta1: 'Free Consultation', cta2: 'Our Practice Areas',
       reviewBadge: '76+ Successful Reviews', reviewSub: '"One of the best lawyers in Malatya..."',
+      reviewCta: 'See All Google Reviews',
     },
     services: {
       label: 'Our Practice Areas',
@@ -106,7 +111,10 @@ const T = {
     },
     reviews: {
       label: 'Client Reviews',
-      h: 'Hundreds of Satisfied', hItalic: 'Individuals & Companies', cta: 'See All',
+      h: 'Hundreds of Satisfied', hItalic: 'Individuals & Companies', hEnd: '.',
+      showMore: 'Show More',
+      showLess: 'Show Less',
+      cta: 'See All on Google',
     },
     contact: {
       label: 'Contact',
@@ -145,29 +153,22 @@ const PHONE_NUMBER = '+90 507 147 47 96';
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const;
 
-const LoadingScreen = ({ show }: { show: boolean }) => (
-  <AnimatePresence>
-    {show && (
-      <motion.div
-        initial={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.45, ease: EASE_OUT }}
-        className="loading-screen fixed inset-0 z-[100] bg-[#FDFCFB] flex items-center justify-center"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.45, ease: EASE_OUT }}
-          className="text-center"
-        >
-          <p className="serif text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">HASAN BIRDAL YILMAZ</p>
-          <div className="mt-3 h-[2px] w-40 bg-gradient-to-r from-transparent via-gold-500 to-transparent animate-pulse" />
-        </motion.div>
-      </motion.div>
-    )}
-  </AnimatePresence>
-);
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(max-width: 767px)').matches;
+  });
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 767px)');
+    const onChange = () => setIsMobile(media.matches);
+    onChange();
+    media.addEventListener('change', onChange);
+    return () => media.removeEventListener('change', onChange);
+  }, []);
+
+  return isMobile;
+};
 
 // --- Components ---
 
@@ -186,11 +187,11 @@ const Navbar = () => {
   return (
     <nav className={cn(
       "fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-4 sm:px-6 py-4",
-      isScrolled ? "bg-white/90 backdrop-blur-md shadow-sm py-3" : "bg-transparent"
+      isScrolled ? "bg-white/90 backdrop-blur-md shadow-sm py-3" : "bg-white/92 md:bg-transparent backdrop-blur-md"
     )}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="serif text-[1.95rem] sm:text-xl md:text-2xl font-bold tracking-tight text-slate-900 leading-none">
+          <span className="serif text-[1.65rem] sm:text-xl md:text-2xl font-bold tracking-tight text-slate-900 leading-none">
             HASAN BİRDAL YILMAZ
           </span>
           <span className="text-[11px] md:text-xs uppercase tracking-[0.26em] font-medium text-gold-600 mt-1">
@@ -246,16 +247,16 @@ const Hero = () => {
   const { lang } = useLang();
   const t = T[lang].hero;
   return (
-    <section className="relative flex items-center pt-28 pb-18 lg:min-h-screen lg:pt-20 lg:pb-0 overflow-hidden bg-[#FDFCFB]">
+    <section className="relative flex items-center pt-28 pb-16 lg:min-h-screen lg:pt-20 lg:pb-0 overflow-hidden bg-[#FDFCFB]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
-          className="z-10 order-2 lg:order-1"
+          className="z-10 order-2 lg:order-1 mt-2 sm:mt-0"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold-200/80 bg-gold-50/80 text-gold-700 text-[11px] font-semibold uppercase tracking-[0.22em] mb-5 sm:mb-6 backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-gold-500" />
             {t.badge}
           </div>
           <h1 className="serif text-[3.6rem] sm:text-6xl md:text-8xl font-medium leading-[0.88] text-slate-900 mb-6 sm:mb-8 italic tracking-tight">
@@ -280,7 +281,7 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="order-1 lg:order-2 relative aspect-[3/4] sm:aspect-[4/5] w-full max-w-[330px] sm:max-w-lg mx-auto lg:ml-auto"
+          className="order-1 lg:order-2 relative aspect-[3/4] sm:aspect-[4/5] w-full max-w-[330px] sm:max-w-lg mx-auto lg:ml-auto mb-16 sm:mb-0"
         >
           <div className="absolute inset-0 rounded-[2rem] border border-gold-200/70 bg-gradient-to-b from-gold-50/50 to-white/30 shadow-[0_20px_80px_-30px_rgba(181,137,67,0.45)] transform translate-x-2 translate-y-2 sm:translate-x-6 sm:translate-y-6 z-0" />
           <div className="relative z-10 w-full h-full overflow-hidden rounded-[2rem] bg-slate-100 sm:grayscale sm:hover:grayscale-0 transition-all duration-1000 ring-1 ring-black/5">
@@ -297,6 +298,9 @@ const Hero = () => {
              </div>
              <p className="text-[11px] font-semibold text-slate-900 uppercase tracking-[0.16em] mb-1">{t.reviewBadge}</p>
              <p className="text-xs text-slate-500 italic">{t.reviewSub}</p>
+             <a href="#reviews" className="inline-flex mt-2 text-[10px] uppercase tracking-[0.14em] font-bold text-gold-700 hover:text-gold-500 transition-colors">
+               {t.reviewCta}
+             </a>
           </div>
           <div className="absolute -bottom-10 -left-10 bg-white p-8 shadow-2xl z-20 hidden md:block border-l-4 border-gold-500 rounded-md">
              <div className="flex gap-1 mb-2">
@@ -304,6 +308,9 @@ const Hero = () => {
              </div>
              <p className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-1">{t.reviewBadge}</p>
              <p className="text-xs text-slate-500 italic">{t.reviewSub}</p>
+             <a href="#reviews" className="inline-flex mt-2 text-[10px] uppercase tracking-[0.14em] font-bold text-gold-700 hover:text-gold-500 transition-colors">
+               {t.reviewCta}
+             </a>
           </div>
         </motion.div>
       </div>
@@ -314,12 +321,13 @@ const Hero = () => {
   );
 };
 
-const PracticeAreaCard = ({ icon: Icon, title, description, learnMore, delay = 0 }: any) => (
+const PracticeAreaCard = ({ icon: Icon, title, description, learnMore, delay = 0, isMobile = false }: any) => (
   <motion.div 
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
+    initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+    whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
+    animate={isMobile ? { opacity: 1, y: 0 } : undefined}
     viewport={{ once: true, amount: 0.25, margin: '0px 0px -80px 0px' }}
-    transition={{ duration: 0.55, delay, ease: EASE_OUT }}
+    transition={isMobile ? { duration: 0.2 } : { duration: 0.55, delay, ease: EASE_OUT }}
     className="group p-7 sm:p-10 bg-white/85 backdrop-blur-md border border-slate-100 hover:border-gold-300 transition-all duration-500 relative overflow-hidden rounded-3xl shadow-lg shadow-slate-900/[0.04] hover:shadow-2xl hover:-translate-y-1"
   >
     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300 opacity-0 group-hover:opacity-100 transition-all duration-500" />
@@ -336,6 +344,7 @@ const PracticeAreaCard = ({ icon: Icon, title, description, learnMore, delay = 0
 
 const PracticeAreas = () => {
   const { lang } = useLang();
+  const isMobile = useIsMobile();
   const t = T[lang].services;
   const icons = [Gavel, Scale, Briefcase, Users, FileText, ShieldCheck];
   return (
@@ -352,7 +361,7 @@ const PracticeAreas = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {t.areas.map((area, idx) => (
-            <PracticeAreaCard key={idx} icon={icons[idx]} {...area} learnMore={t.learnMore} delay={idx * 0.1} />
+            <PracticeAreaCard key={idx} icon={icons[idx]} {...area} learnMore={t.learnMore} delay={idx * 0.1} isMobile={isMobile} />
           ))}
         </div>
       </div>
@@ -362,6 +371,7 @@ const PracticeAreas = () => {
 
 const About = () => {
   const { lang } = useLang();
+  const isMobile = useIsMobile();
   const t = T[lang].about;
   return (
     <section id="about" className="py-24 md:py-32 bg-slate-900 text-white overflow-hidden relative">
@@ -369,10 +379,11 @@ const About = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
           <div className="relative">
             <motion.div 
-               whileInView={{ opacity: 1, x: 0 }}
-               initial={{ opacity: 0, x: -50 }}
+              whileInView={isMobile ? undefined : { opacity: 1, x: 0 }}
+              initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+              animate={isMobile ? { opacity: 1, x: 0 } : undefined}
               viewport={{ once: true, amount: 0.25, margin: '0px 0px -80px 0px' }}
-              transition={{ duration: 0.6, ease: EASE_OUT }}
+              transition={isMobile ? { duration: 0.2 } : { duration: 0.6, ease: EASE_OUT }}
                className="relative z-10 p-8 sm:p-12 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl shadow-2xl"
             >
               <h2 className="serif text-4xl sm:text-5xl md:text-7xl mb-8">{t.title} <span className="italic text-gold-400">{t.titleItalic}</span></h2>
@@ -416,7 +427,9 @@ const About = () => {
 
 const Reviews = () => {
   const { lang } = useLang();
+  const isMobile = useIsMobile();
   const t = T[lang].reviews;
+  const [expanded, setExpanded] = useState(false);
   const reviews = [
     {
       name: "Ezgi Serefoglu Kaya",
@@ -479,6 +492,7 @@ const Reviews = () => {
       rating: 5,
     },
   ];
+  const visibleReviews = expanded ? reviews : reviews.slice(0, 3);
 
   return (
     <section id="reviews" className="py-24 md:py-32 bg-white">
@@ -488,13 +502,14 @@ const Reviews = () => {
           <h3 className="serif text-4xl md:text-5xl text-slate-900 leading-tight">{t.h} <span className="italic font-medium">{t.hItalic}</span>{t.hEnd}</h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
-          {reviews.map((rev, idx) => (
+          {visibleReviews.map((rev, idx) => (
              <motion.div 
                key={idx}
-               initial={{ opacity: 0, y: 20 }}
-               whileInView={{ opacity: 1, y: 0 }}
+               initial={isMobile ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+               whileInView={isMobile ? undefined : { opacity: 1, y: 0 }}
+               animate={isMobile ? { opacity: 1, y: 0 } : undefined}
                viewport={{ once: true, amount: 0.2, margin: '0px 0px -60px 0px' }}
-               transition={{ duration: 0.45, delay: idx * 0.06, ease: EASE_OUT }}
+               transition={isMobile ? { duration: 0.2 } : { duration: 0.45, delay: idx * 0.06, ease: EASE_OUT }}
                className="p-7 sm:p-10 border border-slate-100 bg-white/90 rounded-3xl flex flex-col justify-between hover:shadow-xl transition-all duration-700"
              >
                 <div>
@@ -510,10 +525,19 @@ const Reviews = () => {
              </motion.div>
           ))}
         </div>
-        <div className="mt-16 text-center">
-            <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener" className="inline-flex items-center gap-3 text-slate-400 hover:text-gold-600 transition-colors uppercase tracking-widest text-[10px] font-bold">
-             {t.cta} <ChevronRight className="w-3 h-3" />
-           </a>
+        <div className="mt-16 text-center flex flex-col sm:flex-row items-center justify-center gap-4">
+          {reviews.length > 3 && (
+            <button
+              type="button"
+              onClick={() => setExpanded((prev) => !prev)}
+              className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-slate-200 text-slate-600 hover:text-gold-700 hover:border-gold-300 transition-colors uppercase tracking-widest text-[10px] font-bold"
+            >
+              {expanded ? t.showLess : t.showMore}
+            </button>
+          )}
+          <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener" className="inline-flex items-center gap-3 text-slate-400 hover:text-gold-600 transition-colors uppercase tracking-widest text-[10px] font-bold">
+            {t.cta} <ChevronRight className="w-3 h-3" />
+          </a>
         </div>
       </div>
     </section>
@@ -522,6 +546,7 @@ const Reviews = () => {
 
 const Contact = () => {
   const { lang } = useLang();
+  const isMobile = useIsMobile();
   const t = T[lang].contact;
   return (
     <section id="contact" className="py-24 md:py-32 bg-[#FDFCFB]">
@@ -575,10 +600,11 @@ const Contact = () => {
           </div>
 
           <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={isMobile ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
+            whileInView={isMobile ? undefined : { opacity: 1, x: 0 }}
+            animate={isMobile ? { opacity: 1, x: 0 } : undefined}
             viewport={{ once: true, amount: 0.2, margin: '0px 0px -60px 0px' }}
-            transition={{ duration: 0.6, ease: EASE_OUT }}
+            transition={isMobile ? { duration: 0.2 } : { duration: 0.6, ease: EASE_OUT }}
             className="bg-white p-7 sm:p-12 shadow-2xl border border-slate-50 border-t-8 border-t-gold-500 rounded-3xl"
           >
             <h4 className="serif text-3xl text-slate-900 mb-8 tracking-tight">{t.formTitle}</h4>
@@ -669,13 +695,13 @@ const MobileQuickBar = () => {
       <div className="bg-slate-950/90 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-2xl shadow-black/30 flex gap-2">
         <a
           href="tel:+905071474796"
-          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gold-500 text-slate-950 text-xs font-bold uppercase tracking-[0.18em]"
+          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gold-500 text-slate-950 text-xs font-bold uppercase tracking-[0.18em] hover:bg-[#FDFCFB] hover:text-slate-900 transition-colors"
         >
           <Phone className="w-4 h-4" /> {lang === 'tr' ? 'Ara' : 'Call'}
         </a>
         <a
           href="#contact"
-          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-white/20 text-white text-xs font-bold uppercase tracking-[0.18em]"
+          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-white/20 text-white text-xs font-bold uppercase tracking-[0.18em] hover:bg-[#FDFCFB] hover:text-slate-900 transition-colors"
         >
           <Mail className="w-4 h-4" /> {lang === 'tr' ? 'Iletisim' : 'Contact'}
         </a>
@@ -687,8 +713,6 @@ const MobileQuickBar = () => {
 export default function App() {
   const [lang, setLang] = useState<Lang>('tr');
   const [theme, setTheme] = useState<Theme>('light');
-  const prefersReducedMotion = useReducedMotion();
-  const [isBooting, setIsBooting] = useState(!prefersReducedMotion);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem('theme') as Theme | null;
@@ -703,27 +727,12 @@ export default function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      setIsBooting(false);
-      return;
-    }
-    const timer = setTimeout(() => setIsBooting(false), 650);
-    return () => clearTimeout(timer);
-  }, [prefersReducedMotion]);
-
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       <LangContext.Provider value={{ lang, setLang }}>
-        <LoadingScreen show={isBooting} />
-        <motion.div
-          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
-          animate={isBooting ? { opacity: 0, y: 12 } : { opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, ease: EASE_OUT }}
-          className="site-shell antialiased selection:bg-gold-500 selection:text-white"
-        >
+        <div className="site-shell antialiased selection:bg-gold-500 selection:text-white">
           <Navbar />
-          <main className="pb-24 md:pb-0">
+          <main>
             <Hero />
             <PracticeAreas />
             <About />
@@ -732,7 +741,7 @@ export default function App() {
           </main>
           <MobileQuickBar />
           <Footer />
-        </motion.div>
+        </div>
       </LangContext.Provider>
     </ThemeContext.Provider>
   );
