@@ -235,7 +235,7 @@ const Hero = () => {
           className="order-1 lg:order-2 relative aspect-[3/4] sm:aspect-[4/5] w-full max-w-[280px] sm:max-w-lg mx-auto lg:ml-auto"
         >
           <div className="hidden sm:block absolute inset-0 border-[12px] border-gold-50 transform translate-x-6 translate-y-6 z-0" />
-          <div className="relative z-10 w-full h-full overflow-hidden bg-slate-100 grayscale hover:grayscale-0 transition-all duration-1000">
+          <div className="relative z-10 w-full h-full overflow-hidden bg-slate-100 sm:grayscale sm:hover:grayscale-0 transition-all duration-1000">
             <img 
               src={birdalImage}
               alt="Avukat Hasan Birdal Yılmaz" 
@@ -555,7 +555,7 @@ const Contact = () => {
       </div>
       
       {/* Map */}
-      <div className="mt-32 h-[500px] w-full grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-1000 bg-slate-200">
+      <div className="mt-32 h-[500px] w-full sm:grayscale sm:opacity-80 sm:hover:grayscale-0 sm:hover:opacity-100 transition-all duration-1000 bg-slate-200">
          <iframe 
            src={GOOGLE_MAPS_EMBED_URL}
            width="100%" 
