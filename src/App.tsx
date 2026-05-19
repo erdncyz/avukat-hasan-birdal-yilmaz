@@ -185,15 +185,15 @@ const Navbar = () => {
 
   return (
     <nav className={cn(
-      "fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-6 py-4",
+      "fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-4 sm:px-6 py-4",
       isScrolled ? "bg-white/90 backdrop-blur-md shadow-sm py-3" : "bg-transparent"
     )}>
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex flex-col">
-          <span className="serif text-xl md:text-2xl font-bold tracking-tight text-slate-900">
+          <span className="serif text-[1.95rem] sm:text-xl md:text-2xl font-bold tracking-tight text-slate-900 leading-none">
             HASAN BİRDAL YILMAZ
           </span>
-          <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] font-medium text-gold-600">
+          <span className="text-[11px] md:text-xs uppercase tracking-[0.26em] font-medium text-gold-600 mt-1">
             {T[lang].subtitle}
           </span>
         </div>
@@ -246,31 +246,31 @@ const Hero = () => {
   const { lang } = useLang();
   const t = T[lang].hero;
   return (
-    <section className="relative flex items-center pt-24 pb-14 lg:min-h-screen lg:pt-20 lg:pb-0 overflow-hidden bg-[#FDFCFB]">
-      <div className="max-w-7xl mx-auto px-5 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+    <section className="relative flex items-center pt-28 pb-18 lg:min-h-screen lg:pt-20 lg:pb-0 overflow-hidden bg-[#FDFCFB]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
           className="z-10 order-2 lg:order-1"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gold-100 text-gold-700 text-[11px] font-semibold uppercase tracking-widest mb-4 sm:mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold-200/80 bg-gold-50/80 text-gold-700 text-[11px] font-semibold uppercase tracking-[0.22em] mb-5 sm:mb-6 backdrop-blur-sm">
             <span className="w-2 h-2 rounded-full bg-gold-500 animate-pulse" />
             {t.badge}
           </div>
-          <h1 className="serif text-5xl sm:text-6xl md:text-8xl font-medium leading-[0.92] text-slate-900 mb-6 sm:mb-8 italic">
+          <h1 className="serif text-[3.6rem] sm:text-6xl md:text-8xl font-medium leading-[0.88] text-slate-900 mb-6 sm:mb-8 italic tracking-tight">
             {t.h1a} <br />
             <span className="not-italic font-semibold text-gold-600">{t.h1b}</span> <br />
             {t.h1c}
           </h1>
-          <p className="text-base sm:text-lg text-slate-600 max-w-md mb-8 sm:mb-10 leading-relaxed font-light">
+          <p className="text-[1.06rem] sm:text-lg text-slate-600 max-w-md mb-8 sm:mb-10 leading-relaxed font-light">
             {t.desc}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <a href="#contact" className="px-6 sm:px-8 py-4 bg-slate-900 text-white rounded-sm text-sm uppercase tracking-widest font-semibold hover:bg-gold-700 transition-all text-center">
+            <a href="#contact" className="px-7 sm:px-8 py-4 bg-slate-900 text-white rounded-full text-sm uppercase tracking-[0.18em] font-semibold hover:bg-gold-700 transition-all text-center shadow-lg shadow-slate-900/15">
               {t.cta1}
             </a>
-            <a href="#services" className="px-6 sm:px-8 py-4 border border-slate-200 text-slate-900 rounded-sm text-sm uppercase tracking-widest font-semibold hover:bg-slate-50 transition-all text-center">
+            <a href="#services" className="px-7 sm:px-8 py-4 border border-slate-300 text-slate-900 rounded-full text-sm uppercase tracking-[0.18em] font-semibold hover:bg-slate-50 transition-all text-center backdrop-blur-sm">
               {t.cta2}
             </a>
           </div>
@@ -280,17 +280,25 @@ const Hero = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="order-1 lg:order-2 relative aspect-[3/4] sm:aspect-[4/5] w-full max-w-[280px] sm:max-w-lg mx-auto lg:ml-auto"
+          className="order-1 lg:order-2 relative aspect-[3/4] sm:aspect-[4/5] w-full max-w-[330px] sm:max-w-lg mx-auto lg:ml-auto"
         >
-          <div className="hidden sm:block absolute inset-0 border-[12px] border-gold-50 transform translate-x-6 translate-y-6 z-0" />
-          <div className="relative z-10 w-full h-full overflow-hidden bg-slate-100 sm:grayscale sm:hover:grayscale-0 transition-all duration-1000">
+          <div className="absolute inset-0 rounded-[2rem] border border-gold-200/70 bg-gradient-to-b from-gold-50/50 to-white/30 shadow-[0_20px_80px_-30px_rgba(181,137,67,0.45)] transform translate-x-2 translate-y-2 sm:translate-x-6 sm:translate-y-6 z-0" />
+          <div className="relative z-10 w-full h-full overflow-hidden rounded-[2rem] bg-slate-100 sm:grayscale sm:hover:grayscale-0 transition-all duration-1000 ring-1 ring-black/5">
             <img 
               src={birdalImage}
               alt="Avukat Hasan Birdal Yılmaz" 
               className="w-full h-full object-cover"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/25 via-transparent to-transparent" />
           </div>
-          <div className="absolute -bottom-10 -left-10 bg-white p-8 shadow-2xl z-20 hidden md:block border-l-4 border-gold-500">
+          <div className="absolute -bottom-8 left-4 right-4 bg-white/85 backdrop-blur-md p-5 shadow-2xl z-20 border border-white/60 rounded-2xl md:hidden">
+             <div className="flex gap-1 mb-2">
+               {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-gold-500 text-gold-500" />)}
+             </div>
+             <p className="text-[11px] font-semibold text-slate-900 uppercase tracking-[0.16em] mb-1">{t.reviewBadge}</p>
+             <p className="text-xs text-slate-500 italic">{t.reviewSub}</p>
+          </div>
+          <div className="absolute -bottom-10 -left-10 bg-white p-8 shadow-2xl z-20 hidden md:block border-l-4 border-gold-500 rounded-md">
              <div className="flex gap-1 mb-2">
                {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 fill-gold-500 text-gold-500" />)}
              </div>
@@ -312,13 +320,13 @@ const PracticeAreaCard = ({ icon: Icon, title, description, learnMore, delay = 0
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.25, margin: '0px 0px -80px 0px' }}
     transition={{ duration: 0.55, delay, ease: EASE_OUT }}
-    className="group p-10 bg-white border border-slate-100 hover:border-gold-300 transition-all duration-500 relative overflow-hidden"
+    className="group p-7 sm:p-10 bg-white/85 backdrop-blur-md border border-slate-100 hover:border-gold-300 transition-all duration-500 relative overflow-hidden rounded-3xl shadow-lg shadow-slate-900/[0.04] hover:shadow-2xl hover:-translate-y-1"
   >
-    <div className="absolute top-0 left-0 w-1 h-0 bg-gold-500 group-hover:h-full transition-all duration-500" />
-    <div className="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center mb-8 group-hover:bg-gold-500 transition-colors duration-500">
+    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gold-300 via-gold-500 to-gold-300 opacity-0 group-hover:opacity-100 transition-all duration-500" />
+    <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center mb-7 group-hover:bg-gold-500 transition-colors duration-500">
       <Icon className="w-6 h-6 text-slate-900 group-hover:text-white transition-colors duration-500" />
     </div>
-    <h3 className="serif text-2xl font-semibold text-slate-900 mb-4 tracking-tight group-hover:text-gold-700 transition-colors">{title}</h3>
+    <h3 className="serif text-2xl font-semibold text-slate-900 mb-3 tracking-tight group-hover:text-gold-700 transition-colors">{title}</h3>
     <p className="text-slate-500 font-light leading-relaxed mb-6">{description}</p>
     <a href="#contact" className="text-xs uppercase tracking-widest font-bold text-slate-400 group-hover:text-gold-700 flex items-center gap-2 group/link">
       {learnMore} <ChevronRight className="w-3 h-3 group-hover/link:translate-x-1 transition-transform" />
@@ -331,9 +339,9 @@ const PracticeAreas = () => {
   const t = T[lang].services;
   const icons = [Gavel, Scale, Briefcase, Users, FileText, ShieldCheck];
   return (
-    <section id="services" className="py-32 bg-[#FDFCFB]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+    <section id="services" className="py-24 md:py-32 bg-[#FDFCFB]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-14 md:mb-20 gap-6 md:gap-8">
           <div className="max-w-2xl">
             <h2 className="serif text-11px text-gold-600 uppercase tracking-[0.4em] font-semibold mb-4">{t.label}</h2>
             <h3 className="serif text-4xl md:text-6xl text-slate-900 leading-tight">
@@ -342,7 +350,7 @@ const PracticeAreas = () => {
           </div>
           <p className="text-slate-500 max-w-sm font-light leading-relaxed">{t.desc}</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {t.areas.map((area, idx) => (
             <PracticeAreaCard key={idx} icon={icons[idx]} {...area} learnMore={t.learnMore} delay={idx * 0.1} />
           ))}
@@ -356,18 +364,18 @@ const About = () => {
   const { lang } = useLang();
   const t = T[lang].about;
   return (
-    <section id="about" className="py-32 bg-slate-900 text-white overflow-hidden relative">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+    <section id="about" className="py-24 md:py-32 bg-slate-900 text-white overflow-hidden relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-20 items-center">
           <div className="relative">
             <motion.div 
                whileInView={{ opacity: 1, x: 0 }}
                initial={{ opacity: 0, x: -50 }}
               viewport={{ once: true, amount: 0.25, margin: '0px 0px -80px 0px' }}
               transition={{ duration: 0.6, ease: EASE_OUT }}
-               className="relative z-10 p-12 bg-white/5 backdrop-blur-sm border border-white/10 rounded-sm"
+               className="relative z-10 p-8 sm:p-12 bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl shadow-2xl"
             >
-              <h2 className="serif text-5xl md:text-7xl mb-8">{t.title} <span className="italic text-gold-400">{t.titleItalic}</span></h2>
+              <h2 className="serif text-4xl sm:text-5xl md:text-7xl mb-8">{t.title} <span className="italic text-gold-400">{t.titleItalic}</span></h2>
               <div className="space-y-8">
                 <div>
                   <h4 className="text-gold-400 uppercase tracking-widest text-xs font-bold mb-3">{t.t1h}</h4>
@@ -473,13 +481,13 @@ const Reviews = () => {
   ];
 
   return (
-    <section id="reviews" className="py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-20">
+    <section id="reviews" className="py-24 md:py-32 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-14 md:mb-20">
           <h2 className="serif text-11px text-gold-600 uppercase tracking-[0.4em] font-semibold mb-4 italic">{t.label}</h2>
           <h3 className="serif text-4xl md:text-5xl text-slate-900 leading-tight">{t.h} <span className="italic font-medium">{t.hItalic}</span>{t.hEnd}</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
           {reviews.map((rev, idx) => (
              <motion.div 
                key={idx}
@@ -487,7 +495,7 @@ const Reviews = () => {
                whileInView={{ opacity: 1, y: 0 }}
                viewport={{ once: true, amount: 0.2, margin: '0px 0px -60px 0px' }}
                transition={{ duration: 0.45, delay: idx * 0.06, ease: EASE_OUT }}
-               className="p-10 border border-slate-100 flex flex-col justify-between hover:shadow-xl transition-all duration-700"
+               className="p-7 sm:p-10 border border-slate-100 bg-white/90 rounded-3xl flex flex-col justify-between hover:shadow-xl transition-all duration-700"
              >
                 <div>
                   <Quote className="w-8 h-8 text-gold-100 mb-6" />
@@ -516,12 +524,12 @@ const Contact = () => {
   const { lang } = useLang();
   const t = T[lang].contact;
   return (
-    <section id="contact" className="py-32 bg-[#FDFCFB]">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+    <section id="contact" className="py-24 md:py-32 bg-[#FDFCFB]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 lg:gap-24">
           <div>
             <h2 className="serif text-11px text-gold-600 uppercase tracking-[0.4em] font-semibold mb-4 italic">{t.label}</h2>
-            <h3 className="serif text-5xl md:text-7xl text-slate-900 mb-12">{t.h} <br /><span className="italic font-medium">{t.hItalic}</span> {t.hEnd}</h3>
+            <h3 className="serif text-4xl sm:text-5xl md:text-7xl text-slate-900 mb-10 md:mb-12">{t.h} <br /><span className="italic font-medium">{t.hItalic}</span> {t.hEnd}</h3>
             
             <div className="space-y-6 sm:space-y-10">
               <div className="flex gap-4 group">
@@ -559,10 +567,10 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="mt-16 flex gap-4">
-              <a href={INSTAGRAM_URL} target="_blank" rel="noopener" className="w-10 h-10 bg-white border border-slate-100 flex items-center justify-center hover:bg-gold-500 hover:text-white transition-all transform hover:-translate-y-1"><Instagram className="w-4 h-4" /></a>
-               <a href="#" className="w-10 h-10 bg-white border border-slate-100 flex items-center justify-center hover:bg-gold-500 hover:text-white transition-all transform hover:-translate-y-1"><Facebook className="w-4 h-4" /></a>
-              <a href={LINKEDIN_URL} target="_blank" rel="noopener" className="w-10 h-10 bg-white border border-slate-100 flex items-center justify-center hover:bg-gold-500 hover:text-white transition-all transform hover:-translate-y-1"><Linkedin className="w-4 h-4" /></a>
+            <div className="mt-12 md:mt-16 flex gap-3">
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener" className="w-11 h-11 rounded-xl bg-white border border-slate-100 flex items-center justify-center hover:bg-gold-500 hover:text-white transition-all transform hover:-translate-y-1"><Instagram className="w-4 h-4" /></a>
+               <a href="#" className="w-11 h-11 rounded-xl bg-white border border-slate-100 flex items-center justify-center hover:bg-gold-500 hover:text-white transition-all transform hover:-translate-y-1"><Facebook className="w-4 h-4" /></a>
+              <a href={LINKEDIN_URL} target="_blank" rel="noopener" className="w-11 h-11 rounded-xl bg-white border border-slate-100 flex items-center justify-center hover:bg-gold-500 hover:text-white transition-all transform hover:-translate-y-1"><Linkedin className="w-4 h-4" /></a>
             </div>
           </div>
 
@@ -571,7 +579,7 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2, margin: '0px 0px -60px 0px' }}
             transition={{ duration: 0.6, ease: EASE_OUT }}
-            className="bg-white p-12 shadow-2xl border border-slate-50 border-t-8 border-t-gold-500"
+            className="bg-white p-7 sm:p-12 shadow-2xl border border-slate-50 border-t-8 border-t-gold-500 rounded-3xl"
           >
             <h4 className="serif text-3xl text-slate-900 mb-8 tracking-tight">{t.formTitle}</h4>
             <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
@@ -605,7 +613,7 @@ const Contact = () => {
       </div>
       
       {/* Map */}
-      <div className="mt-32 h-[500px] w-full sm:grayscale sm:opacity-80 sm:hover:grayscale-0 sm:hover:opacity-100 transition-all duration-1000 bg-slate-200">
+      <div className="mt-20 md:mt-32 h-[420px] md:h-[500px] w-full sm:grayscale sm:opacity-80 sm:hover:grayscale-0 sm:hover:opacity-100 transition-all duration-1000 bg-slate-200 overflow-hidden rounded-t-[2rem] md:rounded-none ring-1 ring-black/5">
          <iframe 
            src={GOOGLE_MAPS_EMBED_URL}
            width="100%" 
@@ -624,14 +632,14 @@ const Footer = () => {
   const { lang } = useLang();
   const t = T[lang].footer;
   return (
-    <footer className="py-16 bg-slate-950 text-white border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+    <footer className="py-16 md:py-16 bg-slate-950 text-white border-t border-white/5 pb-28 md:pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="flex flex-col items-center md:items-start">
           <span className="serif text-xl font-bold tracking-tight text-white mb-1">HASAN BİRDAL YILMAZ</span>
           <span className="text-[9px] uppercase tracking-[0.4em] font-medium text-gold-500">{t.subtitle}</span>
         </div>
         
-        <div className="flex gap-8 text-[11px] uppercase tracking-widest font-medium text-slate-500">
+          <div className="flex gap-6 md:gap-8 text-[11px] uppercase tracking-widest font-medium text-slate-500">
            <a href="#about" className="hover:text-gold-400 transition-colors">{t.about}</a>
            <a href="#services" className="hover:text-gold-400 transition-colors">{t.services}</a>
            <a href="#contact" className="hover:text-gold-400 transition-colors">{t.contact}</a>
@@ -651,6 +659,28 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+  );
+};
+
+const MobileQuickBar = () => {
+  const { lang } = useLang();
+  return (
+    <div className="md:hidden fixed bottom-4 left-4 right-4 z-50">
+      <div className="bg-slate-950/90 backdrop-blur-xl border border-white/10 rounded-2xl p-2 shadow-2xl shadow-black/30 flex gap-2">
+        <a
+          href="tel:+905071474796"
+          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gold-500 text-slate-950 text-xs font-bold uppercase tracking-[0.18em]"
+        >
+          <Phone className="w-4 h-4" /> {lang === 'tr' ? 'Ara' : 'Call'}
+        </a>
+        <a
+          href="#contact"
+          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-white/20 text-white text-xs font-bold uppercase tracking-[0.18em]"
+        >
+          <Mail className="w-4 h-4" /> {lang === 'tr' ? 'Iletisim' : 'Contact'}
+        </a>
+      </div>
+    </div>
   );
 };
 
@@ -693,13 +723,14 @@ export default function App() {
           className="site-shell antialiased selection:bg-gold-500 selection:text-white"
         >
           <Navbar />
-          <main>
+          <main className="pb-24 md:pb-0">
             <Hero />
             <PracticeAreas />
             <About />
             <Reviews />
             <Contact />
           </main>
+          <MobileQuickBar />
           <Footer />
         </motion.div>
       </LangContext.Provider>
