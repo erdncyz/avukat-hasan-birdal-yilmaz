@@ -1,11 +1,12 @@
-import { motion } from 'motion/react';
-import { Scale, ShieldCheck, Gavel, Briefcase, Users, FileText, Phone, MapPin, Mail, Instagram, Linkedin, Facebook, ChevronRight, Star, Quote } from 'lucide-react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { Scale, ShieldCheck, Gavel, Briefcase, Users, FileText, Phone, MapPin, Mail, Instagram, Linkedin, Facebook, ChevronRight, Star, Quote, Sun, Moon } from 'lucide-react';
 import { useState, useEffect, createContext, useContext } from 'react';
 import { cn } from './lib/utils';
 import birdalImage from '../birdal.jpeg';
 
 // ─── Language system ────────────────────────────────────────────────────────
 type Lang = 'tr' | 'en';
+type Theme = 'light' | 'dark';
 
 const T = {
   tr: {
@@ -133,16 +134,46 @@ const T = {
 const LangContext = createContext<{ lang: Lang; setLang: (l: Lang) => void }>({ lang: 'tr', setLang: () => {} });
 const useLang = () => useContext(LangContext);
 
+const ThemeContext = createContext<{ theme: Theme; setTheme: (t: Theme) => void }>({ theme: 'light', setTheme: () => {} });
+const useTheme = () => useContext(ThemeContext);
+
 const GOOGLE_MAPS_URL = 'https://www.google.com/search?sca_esv=916ec883b16d68de&q=Malatya+Avukat+-+Hasan+Birdal+Y%C4%B1lmaz+Yorumlar&rflfq=1&num=20&stick=H4sIAAAAAAAAAONgkxI2NDCyNDG3tLAwMjY3NDE2NrEw2sDI-IpRzzcxJ7GkMlHBsaw0O7FEQVfBI7E4MU_BKbMoJTFHIfLIxpzcxCqFyPyi0tycxKJFrCRqAAAt7IvBfAAAAA&rldimm=1029479882371433482&tbm=lcl&hl=tr-TR&sa=X&ved=2ahUKEwii-f_7gMWUAxW9GYYAHRd9DVcQ9fQKegQILBAG&biw=1317&bih=1081&dpr=2#lkt=LocalPoiReviews';
 const GOOGLE_MAPS_EMBED_URL = 'https://www.google.com/maps?q=Hasan%20Birdal%20Y%C4%B1lmaz%20Avukatl%C4%B1k%20Ofisi%2C%20Cemal%20G%C3%BCrsel%20Mah.%20%C4%B0smet%20Pa%C5%9Fa%20Cad.%20No%3A115%20Kat%201%20No%3A11%2C%20Ye%C5%9Filyurt%2FMalatya&output=embed';
 const INSTAGRAM_URL = 'https://www.instagram.com/av.hasanbirdalyilmaz?igsh=MTY0OHRncWQ1MmtxaQ%3D%3D';
 const LINKEDIN_URL = 'https://www.linkedin.com/in/hasan-birdal-y%C4%B1lmaz-880634249/';
 const PHONE_NUMBER = '+90 507 147 47 96';
 
+const EASE_OUT = [0.22, 1, 0.36, 1] as const;
+
+const LoadingScreen = ({ show }: { show: boolean }) => (
+  <AnimatePresence>
+    {show && (
+      <motion.div
+        initial={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.45, ease: EASE_OUT }}
+        className="loading-screen fixed inset-0 z-[100] bg-[#FDFCFB] flex items-center justify-center"
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.45, ease: EASE_OUT }}
+          className="text-center"
+        >
+          <p className="serif text-2xl md:text-3xl font-semibold tracking-tight text-slate-900">HASAN BIRDAL YILMAZ</p>
+          <div className="mt-3 h-[2px] w-40 bg-gradient-to-r from-transparent via-gold-500 to-transparent animate-pulse" />
+        </motion.div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+);
+
 // --- Components ---
 
 const Navbar = () => {
   const { lang, setLang } = useLang();
+  const { theme, setTheme } = useTheme();
   const t = T[lang].nav;
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -172,6 +203,14 @@ const Navbar = () => {
           <a href="#services" className="hover:text-gold-600 transition-colors">{t.services}</a>
           <a href="#reviews" className="hover:text-gold-600 transition-colors">{t.reviews}</a>
           <button
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            className="w-9 h-9 border border-slate-200 text-slate-600 hover:border-gold-500 hover:text-gold-700 transition-all rounded-sm grid place-items-center"
+            aria-label={theme === 'light' ? 'Enable dark mode' : 'Enable light mode'}
+            title={theme === 'light' ? 'Dark mode' : 'Light mode'}
+          >
+            {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+          </button>
+          <button
             onClick={() => setLang(lang === 'tr' ? 'en' : 'tr')}
             className="px-3 py-1.5 border border-slate-200 text-slate-600 hover:border-gold-500 hover:text-gold-700 transition-all rounded-sm text-xs font-bold tracking-widest"
           >
@@ -182,13 +221,22 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* Mobile lang toggle */}
-        <button
-          onClick={() => setLang(lang === 'tr' ? 'en' : 'tr')}
-          className="md:hidden px-3 py-1.5 border border-slate-200 text-slate-600 hover:border-gold-500 hover:text-gold-700 transition-all rounded-sm text-xs font-bold tracking-widest"
-        >
-          {lang === 'tr' ? 'EN' : 'TR'}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <button
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            className="w-9 h-9 border border-slate-200 text-slate-600 hover:border-gold-500 hover:text-gold-700 transition-all rounded-sm grid place-items-center"
+            aria-label={theme === 'light' ? 'Enable dark mode' : 'Enable light mode'}
+            title={theme === 'light' ? 'Dark mode' : 'Light mode'}
+          >
+            {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+          </button>
+          <button
+            onClick={() => setLang(lang === 'tr' ? 'en' : 'tr')}
+            className="px-3 py-1.5 border border-slate-200 text-slate-600 hover:border-gold-500 hover:text-gold-700 transition-all rounded-sm text-xs font-bold tracking-widest"
+          >
+            {lang === 'tr' ? 'EN' : 'TR'}
+          </button>
+        </div>
       </div>
     </nav>
   );
@@ -262,8 +310,8 @@ const PracticeAreaCard = ({ icon: Icon, title, description, learnMore, delay = 0
   <motion.div 
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.8, delay }}
+    viewport={{ once: true, amount: 0.25, margin: '0px 0px -80px 0px' }}
+    transition={{ duration: 0.55, delay, ease: EASE_OUT }}
     className="group p-10 bg-white border border-slate-100 hover:border-gold-300 transition-all duration-500 relative overflow-hidden"
   >
     <div className="absolute top-0 left-0 w-1 h-0 bg-gold-500 group-hover:h-full transition-all duration-500" />
@@ -315,7 +363,8 @@ const About = () => {
             <motion.div 
                whileInView={{ opacity: 1, x: 0 }}
                initial={{ opacity: 0, x: -50 }}
-               viewport={{ once: true }}
+              viewport={{ once: true, amount: 0.25, margin: '0px 0px -80px 0px' }}
+              transition={{ duration: 0.6, ease: EASE_OUT }}
                className="relative z-10 p-12 bg-white/5 backdrop-blur-sm border border-white/10 rounded-sm"
             >
               <h2 className="serif text-5xl md:text-7xl mb-8">{t.title} <span className="italic text-gold-400">{t.titleItalic}</span></h2>
@@ -436,8 +485,8 @@ const Reviews = () => {
                key={idx}
                initial={{ opacity: 0, y: 20 }}
                whileInView={{ opacity: 1, y: 0 }}
-               viewport={{ once: true }}
-               transition={{ delay: idx * 0.1 }}
+               viewport={{ once: true, amount: 0.2, margin: '0px 0px -60px 0px' }}
+               transition={{ duration: 0.45, delay: idx * 0.06, ease: EASE_OUT }}
                className="p-10 border border-slate-100 flex flex-col justify-between hover:shadow-xl transition-all duration-700"
              >
                 <div>
@@ -520,7 +569,8 @@ const Contact = () => {
           <motion.div 
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.2, margin: '0px 0px -60px 0px' }}
+            transition={{ duration: 0.6, ease: EASE_OUT }}
             className="bg-white p-12 shadow-2xl border border-slate-50 border-t-8 border-t-gold-500"
           >
             <h4 className="serif text-3xl text-slate-900 mb-8 tracking-tight">{t.formTitle}</h4>
@@ -606,19 +656,53 @@ const Footer = () => {
 
 export default function App() {
   const [lang, setLang] = useState<Lang>('tr');
+  const [theme, setTheme] = useState<Theme>('light');
+  const prefersReducedMotion = useReducedMotion();
+  const [isBooting, setIsBooting] = useState(!prefersReducedMotion);
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme') as Theme | null;
+    if (storedTheme === 'dark' || storedTheme === 'light') {
+      setTheme(storedTheme);
+    }
+  }, []);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    html.classList.toggle('dark', theme === 'dark');
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setIsBooting(false);
+      return;
+    }
+    const timer = setTimeout(() => setIsBooting(false), 650);
+    return () => clearTimeout(timer);
+  }, [prefersReducedMotion]);
+
   return (
-    <LangContext.Provider value={{ lang, setLang }}>
-      <div className="antialiased selection:bg-gold-500 selection:text-white">
-        <Navbar />
-        <main>
-          <Hero />
-          <PracticeAreas />
-          <About />
-          <Reviews />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
-    </LangContext.Provider>
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      <LangContext.Provider value={{ lang, setLang }}>
+        <LoadingScreen show={isBooting} />
+        <motion.div
+          initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+          animate={isBooting ? { opacity: 0, y: 12 } : { opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: EASE_OUT }}
+          className="site-shell antialiased selection:bg-gold-500 selection:text-white"
+        >
+          <Navbar />
+          <main>
+            <Hero />
+            <PracticeAreas />
+            <About />
+            <Reviews />
+            <Contact />
+          </main>
+          <Footer />
+        </motion.div>
+      </LangContext.Provider>
+    </ThemeContext.Provider>
   );
 }
